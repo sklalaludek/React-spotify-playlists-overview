@@ -128,7 +128,11 @@ class App extends Component {
                 <Filter onInputChange={text => this.setState({filterString: text})}/>
                 {playlistToRender.map(playlist => <PLaylist playlist={playlist}/>)}
             </div>
-            : <button onClick={() => window.location = 'http://localhost:8888/login'}
+            : <button onClick={() => {
+                window.location = window.location.href.includes('localhost')
+                    ? 'http://localhost:8888/login'
+                    : 'https://test-playlist-backend.herokuapp.com/login'
+            }}
             style={buttonStyle}>Sign in with Spotify</button>
             }
         </div>);
