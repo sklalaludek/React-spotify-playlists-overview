@@ -10,7 +10,7 @@ const defaultStyle = {
 
 const counterStyle = {
     ...defaultStyle,
-    display: "inline-block",
+    gridColumn: "5/7",
     width: "40%",
     marginBottom: "20px",
     fontSize: "20px",
@@ -37,10 +37,10 @@ class HoursCounter extends Component {
         let isTooLow = totalDurationHours < 40;
         let hoursCounterStyle = {
             ...counterStyle,
+            gridColumn: "8/10",
             color: isTooLow ? "red" : "white",
             fontWeight: isTooLow ? "bold" : "normal"
         }
-        /*const totalDuration =*/
         return (<div style={hoursCounterStyle}>
             <h2>{totalDurationHours} hours</h2>
         </div>);
@@ -49,7 +49,12 @@ class HoursCounter extends Component {
 
 class Filter extends Component {
     render() {
-        return (<div style={defaultStyle}>
+        return (<div style={{
+                ...defaultStyle,
+                gridColumn: "1 / -1",
+                display: "flex",
+                justifyContent: "center"
+            }}>
             <img/>
             <input type="text" onKeyUp={event => this.props.onInputChange(event.target.value)} style={{...defaultStyle, color: "black", fontSize: "20px", padding: "10px", marginBottom: "20px"}}/>
         </div>);
@@ -61,8 +66,10 @@ class PLaylist extends Component {
         const playlist = this.props.playlist;
         const playListCounterStyle = {
             ...defaultStyle,
-            display: "inline-block",
-            width: "25%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            alignItems: "center",
             padding: "10px",
             marginBottom: "20px",
             fontSize: "20px",
@@ -71,7 +78,7 @@ class PLaylist extends Component {
                 : "gray"
         }
         return (<div style={playListCounterStyle}>
-            <img src={playlist.imageUrl} style={{width: "60px"}}/>
+            <img src={playlist.imageUrl} style={{width: "80px"}}/>
             <h3>{playlist.name}</h3>
             <ul style={{marginTop: "10px", fontWeight: "bold"}}>
                 {playlist.songs.map(song =>
@@ -146,11 +153,40 @@ class App extends Component {
     }
 
     render() {
-        let buttonStyle = {
-            color: "green",
+        const buttonStyle = {
+            gridColumn: "1 / -1",
+            color: "white",
+            backgroundColor: "#1ed760",
             fontSize: "50px",
-            marginTop: "20px",
-            padding: "20px"
+            marginTop: "30px",
+            marginBottom: "0",
+            padding: "18px 48px 16px",
+            cursor: "pointer",
+            minWidth: "160px",
+            textTransform: "uppercase",
+            whiteSpace: "normal",
+            letterSpacing: "2px",
+            display: "block",
+            width: "100%",
+            fontWeight: "700",
+            lineHeight: "1",
+            textAlign: "center",
+            verticalAlign: "middle",
+            border: "1px solid transparent",
+            borderRadius: "500px",
+            borderWidth: "0"
+        }
+        const appStyle = {
+            display: "grid",
+            gridGap: "3px",
+            gridTemplateColumns: "repeat(12, 1fr)",
+            gridTemplateRows: "120px 80px 80px auto"
+        }
+        const playlistContainer = {
+            display: "grid",
+            gridGap: "5px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr)",
+            gridAutoRows: "75px"
         }
         let playlistToRender =
         this.state.user && this.state.playlists
@@ -163,17 +199,22 @@ class App extends Component {
             : []
         return (<div className="App">
             {this.state.user
-            ? <div>
+            ? <div style={appStyle}>
                 <h1 style={{...defaultStyle,
-                    fontSize: "55px",
-                    marginTop: 0
+                    fontSize: "60px",
+                    marginTop: 0,
+                    gridColumn: "1 / -1",
+                    display: "flex",
+                    justifyContent: "center"
                 }}>
                     {this.state.user.name}'s Playlists
                 </h1>
                 <PLaylistCounter playlists={playlistToRender}/>
                 <HoursCounter playlists={playlistToRender}/>
                 <Filter onInputChange={text => this.setState({filterString: text})}/>
+                <div style={{gridColumn: "1 / -1", display: "grid", gridGap: "12px", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr", gridAutoRows: "300px"}}>
                 {playlistToRender.map((playlist, i) => <PLaylist playlist={playlist} index={i}/>)}
+                </div>
             </div>
             : <button onClick={() => {
                 window.location = window.location.href.includes('localhost')
