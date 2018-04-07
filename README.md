@@ -8,4 +8,5 @@ This tutorial covered topics such as: fetching actual data from Spotify, authent
 Server template: https://github.com/mpj/oauth-bridge-template.
 
 > [React-spotify-playlists-overview](https://test-playlist.herokuapp.com/)
+
 > This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
